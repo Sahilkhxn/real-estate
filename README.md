@@ -36,8 +36,8 @@ Browser mein open karo: **http://localhost:3000**
 
 ## 🔐 Admin Login
 - URL: http://localhost:3000/admin/login  
-- Username: **admin**  
-- Password: **admin123**
+- Username: ****  
+- Password: ****
 
 ---
 
