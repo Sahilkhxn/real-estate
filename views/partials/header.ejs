@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpg" />
   <style>
     /* Page-specific overrides can go in templates */
-    <%- typeof extraCSS !== 'undefined' ? extraCSS : '' %>
   </style>
 </head>
 <body>
@@ -18,8 +18,11 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-inner">
+   
     <a href="/" class="nav-logo">
-      <span>Webjinny</span><em></em>
+  <img src="/images/logo.jpg" alt="Webjinny" style="height:40px;width:auto;object-fit:contain;" />
+    <span class="logo-text">Webjinny</span>
+
     </a>
 
     <button class="hamburger" aria-label="Menu">
