@@ -29,7 +29,9 @@ const waMsg = encodeURIComponent(`Hi! I'm interested in your property: ${propert
         <% if (property.photos && property.photos.length > 0) { %>
         <div class="gallery">
           <div class="gallery-main">
-            <img id="galleryMain" src="/uploads/<%= property.photos[0] %>" alt="<%= property.title %>" />
+            <!-- <img id="galleryMain" src="/uploads/<%= property.photos[0] %>" alt="<%= property.title %>" /> -->
+            <img id="galleryMain" src="<%= property.photos[0] %>" alt="<%= property.title %>" />
+
             <% if (property.photos.length > 1) { %>
             <button class="prev-btn" id="prevBtn">‹</button>
             <button class="next-btn" id="nextBtn">›</button>
@@ -39,8 +41,11 @@ const waMsg = encodeURIComponent(`Hi! I'm interested in your property: ${propert
           <% if (property.photos.length > 1) { %>
           <div class="gallery-thumbs">
             <% property.photos.forEach((photo, i) => { %>
-            <img src="/uploads/<%= photo %>" 
-                 data-full="/uploads/<%= photo %>"
+            <!-- <img src="/uploads/<%= photo %>" 
+                 data-full="/uploads/<%= photo %>" -->
+                <img src="<%= photo %>" 
+                     data-full="<%= photo %>"
+
                  alt="Photo <%= i+1 %>" 
                  class="<%= i === 0 ? 'active' : '' %>" />
             <% }) %>
@@ -135,7 +140,7 @@ const waMsg = encodeURIComponent(`Hi! I'm interested in your property: ${propert
       <!-- RIGHT COLUMN — Contact Sidebar -->
       <div>
         <div class="contact-card">
-          <div class="contact-card-title">📞 Contact Owner</div>
+          <div class="contact-card-title"> Contact Owner</div>
 
           <div class="contact-btns">
             <a href="https://wa.me/<%= waNumber.replace(/\D/g,'') %>?text=<%= waMsg %>" 

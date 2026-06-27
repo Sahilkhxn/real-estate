@@ -1,8 +1,6 @@
 const Admin = require('../models/Admin');
 const Property = require('../models/Property');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
 
 // Escape special regex chars to prevent ReDoS
 function escapeRegex(str) {
@@ -76,7 +74,15 @@ exports.listProperties = async (req, res) => {
       Property.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Property.countDocuments(filter)
     ]);
-    res.render('admin/properties', { properties, total, currentPage: Number(page), totalPages: Math.ceil(total / limit), query: req.query, flashSuccess: req.query.success, flashError: null });
+    res.render('admin/properties', {
+      properties,
+      total,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
+      query: req.query,
+      flashSuccess: req.query.success,
+      flashError: null
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error');
@@ -99,11 +105,13 @@ function buildPropertyData(body, files, existingPhotos) {
   const state        = String(body.state        || 'Rajasthan').trim();
   const pincode      = String(body.pincode      || '').trim();
   const propArea     = body.propArea ? Number(body.propArea) : undefined;
-  const newPhotos    = files ? files.map(f => f.filename) : [];
-  const keptPhotos   = existingPhotos
+
+  // f.path = Cloudinary full URL (https://res.cloudinary.com/...)
+  const newPhotos  = files ? files.map(f => f.path) : [];
+  const keptPhotos = existingPhotos
     ? (Array.isArray(existingPhotos) ? existingPhotos : [existingPhotos])
     : [];
-  const allPhotos    = [...keptPhotos, ...newPhotos];
+  const allPhotos  = [...keptPhotos, ...newPhotos];
 
   return {
     title:            String(body.title       || '').trim(),
@@ -113,7 +121,7 @@ function buildPropertyData(body, files, existingPhotos) {
     type:             body.type,
     propertyCategory: body.propertyCategory   || 'apartment',
     status:           body.status             || 'available',
-    location: { area: locationArea, city, state, pincode },
+    location:         { area: locationArea, city, state, pincode },
     bedrooms:         Number(body.bedrooms)   || 0,
     bathrooms:        Number(body.bathrooms)  || 0,
     area:             propArea,
@@ -153,7 +161,7 @@ exports.createProperty = async (req, res) => {
     res.redirect('/admin/properties?success=Property+added+successfully!');
   } catch (err) {
     console.error(err);
-    if (req.files) req.files.forEach(f => fs.unlink(f.path, () => {}));
+    // Note: Cloudinary uploads already happened — no local file cleanup needed
     errorForm(res, false, req.body, 'Failed to create: ' + err.message);
   }
 };
@@ -176,16 +184,14 @@ exports.updateProperty = async (req, res) => {
     const property = await Property.findById(req.params.id);
     if (!property) return res.redirect('/admin/properties');
 
-    // Delete removed photos
     const keptPhotos = req.body.existingPhotos
       ? (Array.isArray(req.body.existingPhotos) ? req.body.existingPhotos : [req.body.existingPhotos])
       : [];
-    property.photos
-      .filter(p => !keptPhotos.includes(p))
-      .forEach(filename => fs.unlink(path.join(__dirname, '../public/uploads', filename), () => {}));
+
+    // Note: Cloudinary photos — local fs.unlink not needed
+    // Removed photos are simply excluded from keptPhotos array
 
     const data = buildPropertyData(req.body, req.files, keptPhotos);
-
     Object.assign(property, data);
     property.updatedAt = Date.now();
     await property.save();
@@ -201,7 +207,7 @@ exports.deleteProperty = async (req, res) => {
   try {
     const property = await Property.findByIdAndDelete(req.params.id);
     if (!property) return res.json({ success: false, message: 'Not found' });
-    property.photos.forEach(f => fs.unlink(path.join(__dirname, '../public/uploads', f), () => {}));
+    // Note: Cloudinary photos cleanup skipped (URLs stored, not local files)
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
