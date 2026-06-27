@@ -15,6 +15,8 @@ router.get('/verify-otp', adminController.verifyOTPPage);
 router.post('/verify-otp', adminController.verifyOTP);
 router.get('/reset-password', adminController.resetPasswordPage);
 router.post('/reset-password', adminController.resetPassword);
+router.get('/forgot-username', adminController.forgotUsernamePage);
+router.post('/forgot-username', adminController.sendUsername);
 
 // Protected routes
 router.get('/dashboard', auth, adminController.dashboard);

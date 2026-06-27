@@ -339,3 +339,44 @@ exports.resetPassword = async (req, res) => {
     res.render('admin/reset-password', { error: 'Failed to reset password.', email: req.body.email, otp: req.body.otp });
   }
 };
+
+// ---- Forgot Username Page ----
+exports.forgotUsernamePage = (req, res) => {
+  res.render('admin/forgot-username', { error: null, success: null });
+};
+
+// ---- Send Username ----
+exports.sendUsername = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const admin = await Admin.findOne({ email });
+    if (!admin) return res.render('admin/forgot-username', { error: 'No admin found with this email.', success: null });
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT),
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Webjinny Admin — Your Username',
+      html: `
+        <h3>Your Admin Username</h3>
+        <p>Your username is: <b style="font-size:1.3rem">${admin.username}</b></p>
+        <p>Use this to login at Webjinny Admin Panel.</p>
+      `
+    });
+
+    res.render('admin/forgot-username', { error: null, success: 'Username sent to your email!' });
+  } catch (err) {
+    console.error(err);
+    res.render('admin/forgot-username', { error: 'Failed to send username.', success: null });
+  }
+};
+

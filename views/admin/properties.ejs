@@ -97,7 +97,7 @@ function formatPrice(n) {
             <tr id="row-<%= p._id %>">
               <td>
                 <% if (p.photos && p.photos.length > 0) { %>
-                  <img src="/uploads/<%= p.photos[0] %>" alt="" class="table-img"/>
+                  <img src="<%= p.photos[0] %>" alt="" class="table-img"/>
                 <% } else { %>
                   <div class="table-img" style="background:var(--bg-page);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:0.65rem;border-radius:6px">No img</div>
                 <% } %>
@@ -112,15 +112,17 @@ function formatPrice(n) {
               <td>
                 <select onchange="updateStatus('<%= p._id %>', this.value)" 
                         style="padding:4px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:0.8rem;cursor:pointer">
-                  <option value="available" <%= p.status === 'available' ? 'selected' : '' %>>✅ Available</option>
-                  <option value="sold" <%= p.status === 'sold' ? 'selected' : '' %>>🔴 Sold</option>
-                  <option value="rented" <%= p.status === 'rented' ? 'selected' : '' %>>🟡 Rented</option>
+                  <option value="available" <%= p.status === 'available' ? 'selected' : '' %>> Available</option>
+                  <option value="sold" <%= p.status === 'sold' ? 'selected' : '' %>> Sold</option>
+                  <option value="rented" <%= p.status === 'rented' ? 'selected' : '' %>> Rented</option>
                 </select>
               </td>
               <td>
                 <button onclick="toggleFeatured('<%= p._id %>', <%= p.featured %>)"
                         style="background:none;border:none;cursor:pointer;font-size:1.2rem">
-                  <%= p.featured ? '⭐' : '☆' %>
+                  <!-- <%= p.featured ? '⭐' : '☆' %> -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="<%= p.featured ? '#CC7000' : 'none' %>" stroke="#CC7000" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+
                 </button>
               </td>
               <td style="font-size:0.8rem;color:var(--text-light)">
