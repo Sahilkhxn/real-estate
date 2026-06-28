@@ -95,13 +95,13 @@ function formatPrice(n) {
             <!-- Actions -->
             <div style="display:flex;gap:10px;flex-wrap:wrap">
               <form action="/admin/properties/<%= p._id %>/approve" method="POST" style="display:inline">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>"/>
                 <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Approve this property?')">
                   ✓ Approve & Publish
                 </button>
               </form>
               <form action="/admin/properties/<%= p._id %>/reject" method="POST" style="display:inline">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>"/>
                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Reject and delete this property?')">
                   ✕ Reject
                 </button>

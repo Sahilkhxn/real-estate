@@ -81,7 +81,7 @@ exports.listProperties = async (req, res) => {
     const { q, status, type, page = 1 } = req.query;
     const limit = 20;
     const skip = (Number(page) - 1) * limit;
-    const filter = {};
+    const filter = { status: { $ne: 'pending' } };
     if (status) filter.status = status;
     if (type) filter.type = type;
     if (q) {
@@ -404,10 +404,14 @@ exports.sendUsername = async (req, res) => {
 };
 
 // ---- Pending Properties ----
+
 exports.pendingProperties = async (req, res) => {
   try {
     const properties = await Property.find({ status: 'pending' }).sort({ createdAt: -1 }).lean();
-    res.render('admin/pending', { properties, flashSuccess: req.query.success });
+    res.render('admin/pending', { 
+      properties, 
+      flashSuccess: req.query.success
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error');
