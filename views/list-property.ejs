@@ -208,6 +208,13 @@
       <div class="admin-card">
         <div class="admin-card-header"><h2 class="admin-card-title">Photos</h2></div>
         <div class="photo-upload-area" id="dropArea" onclick="document.getElementById('photoInput').click()">
+          <div id="uploadProgress" style="display:none;margin-top:12px">
+  <div style="background:var(--border);border-radius:20px;height:8px;overflow:hidden">
+    <div id="progressBar" style="background:linear-gradient(90deg,var(--blue-dark),var(--blue));height:100%;width:0%;transition:width 0.3s;border-radius:20px"></div>
+  </div>
+  <p id="progressText" style="font-size:0.82rem;color:var(--text-light);margin-top:6px;text-align:center">Uploading photos...</p>
+</div>
+
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
             <polyline points="17 8 12 3 7 8"/>
@@ -222,9 +229,11 @@
 
       <!-- Submit -->
       <div style="text-align:center;margin-bottom:32px">
-        <button type="submit" class="btn btn-primary btn-lg" style="padding:14px 48px;font-size:1rem">
-          Submit Property
-        </button>
+       
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="padding:14px 48px;font-size:1rem">
+  Submit Property
+</button>
+
         <p style="margin-top:12px;font-size:0.82rem;color:var(--text-light)">Our team will review your listing within 24 hours.</p>
       </div>
     </form>
@@ -301,6 +310,23 @@ function previewPhotos(input) {
     reader.readAsDataURL(file);
   });
 }
+
+document.querySelector('form').addEventListener('submit', function() {
+  const files = document.getElementById('photoInput').files;
+  if (files.length > 0) {
+    document.getElementById('uploadProgress').style.display = 'block';
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Uploading...';
+    
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += (100 - progress) * 0.1;
+      document.getElementById('progressBar').style.width = Math.min(progress, 90) + '%';
+      document.getElementById('progressText').textContent = `Uploading photos... ${Math.round(Math.min(progress, 90))}%`;
+      if (progress >= 90) clearInterval(interval);
+    }, 800);
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   handleCategory();
