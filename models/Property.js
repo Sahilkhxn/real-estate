@@ -25,12 +25,22 @@ const propertySchema = new mongoose.Schema({
     enum: ['total', 'per_month', 'per_sqft'],
     default: 'total'
   },
+ 
+
   location: {
-    area: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, default: 'Rajasthan' },
-    pincode: { type: String }
-  },
+  area: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, default: 'Rajasthan' },
+  pincode: { type: String, validate: {
+    validator: v => !v || /^\d{6}$/.test(v),
+    message: 'Pincode must be exactly 6 digits'
+  }}
+},
+contactNumber: { type: String, required: true, validate: {
+  validator: v => /^\d{10}$/.test(v),
+  message: 'Contact number must be exactly 10 digits'
+}},
+
   type: {
     type: String,
     enum: ['buy', 'rent', 'sell'],

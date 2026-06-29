@@ -144,7 +144,12 @@
             </div>
             <div class="form-group">
               <label class="form-label">Pincode</label>
-              <input type="text" name="pincode" class="form-control" placeholder="302001"/>
+
+              <input type="number" name="pincode" class="form-control" 
+  placeholder="302001"
+  oninput="if(this.value.length>6) this.value=this.value.slice(0,6)"
+  min="100000" max="999999" title="Exactly 6 digit pincode"/>
+
             </div>
           </div>
         </div>
@@ -186,11 +191,22 @@
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Contact Number *</label>
-              <input type="tel" name="contactNumber" class="form-control" required placeholder="+91 98765 43210"/>
+
+              <input type="number" name="contactNumber" class="form-control" required 
+  placeholder="9876543210" 
+  oninput="if(this.value.length>10) this.value=this.value.slice(0,10)"
+  min="1000000000" max="9999999999" title="Exactly 10 digit number"/>
+
             </div>
             <div class="form-group">
               <label class="form-label">WhatsApp Number</label>
-              <input type="tel" name="whatsappNumber" class="form-control" placeholder="+91 98765 43210"/>
+
+              <input type="number" name="whatsappNumber" class="form-control"
+  placeholder="9876543210"
+  oninput="if(this.value.length>10) this.value=this.value.slice(0,10)"
+  min="1000000000" max="9999999999" title="Exactly 10 digit number"/>
+
+
             </div>
           </div>
         </div>
