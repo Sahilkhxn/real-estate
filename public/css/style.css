@@ -70,7 +70,7 @@ img{max-width:100%}
 .hero-eyebrow .pill{background:#FFD600;color:#1A1200;padding:2px 8px;border-radius:10px;font-size:0.7rem;font-weight:800}
 .hero h1{font-size:clamp(2rem,4vw,2.9rem);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-1.5px;margin-bottom:12px}
 .hero h1 em{font-style:normal;color:#93BBFF}
-.hero-sub{color:rgba(255,255,255,0.68);font-size:0.92rem;margin-bottom:32px;line-height:1.65;max-width:480px}
+.hero-sub{color:rgb(255, 255, 255);font-size:0.92rem;margin-bottom:32px;line-height:1.65;max-width:480px}
 
 /* Search card */
 .search-card{background:var(--white);border-radius:18px;padding:6px;box-shadow:0 24px 64px rgba(0,30,100,0.28);max-width:800px}
