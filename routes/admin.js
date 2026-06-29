@@ -17,6 +17,7 @@ router.get('/reset-password', adminController.resetPasswordPage);
 router.post('/reset-password', adminController.resetPassword);
 router.get('/forgot-username', adminController.forgotUsernamePage);
 router.post('/forgot-username', adminController.sendUsername);
+router.get('/properties/:id/preview', auth, adminController.previewProperty);
 
 // Protected routes
 router.get('/dashboard', auth, adminController.dashboard);

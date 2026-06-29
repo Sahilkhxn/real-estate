@@ -440,3 +440,15 @@ exports.rejectProperty = async (req, res) => {
   }
 };
 
+// ---- Preview Pending Property ----
+exports.previewProperty = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id).lean();
+    if (!property) return res.status(404).render('error', { message: 'Property not found.' });
+    res.render('property-detail', { property });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: 'Something went wrong.' });
+  }
+};
+
